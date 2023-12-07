@@ -3,6 +3,7 @@
 #include "Common/types.hpp"
 
 namespace stl {
+	/* Add template parameters that determine growth rate and linear vs geometric growth */
 	template <typename ValueType> class DynamicArray {
 	public:
 		DynamicArray() noexcept = default;
@@ -39,6 +40,15 @@ namespace stl {
 
 		[[nodiscard]] ValueType& operator[] (u64 const index) noexcept { return m_Data[index]; }
 		[[nodiscard]] ValueType const& operator[] (u64 const index) const noexcept { return m_Data[index]; }
+
+		/* Add template parameters that determines growth */
+		void append(ValueType const& value) noexcept {
+			ValueType* data = new ValueType[m_Length + 1];
+			for (u64 i = 0; i < m_Length; ++i) { data[i] = m_Data[i]; }
+			delete[] m_Data;
+			data[m_Length++] = value;
+			m_Data = data;
+		}
 
 		[[nodiscard]] ValueType* begin() noexcept { return m_Data; }
 		[[nodiscard]] ValueType* end() noexcept { return m_Data + m_Length; }
